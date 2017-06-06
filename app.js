@@ -14,13 +14,19 @@ app.get('/' , function(req, res) {
 io.on('connection', function(socket) {
     console.log('a user connected');
     socket.on('move', function(move) {
-	socket.broadcast.emit('move', move);
+	socket.broadcast.to(move.opponent).emit('move', move);
     });
 
 
     socket.on('login', function(user) {
 	inLobby[user.username] = user;
 	io.emit('LobbyChange', inLobby);
+    });
+
+    socket.on('invite', function(opponent) {
+	delete inLobby[socket.id];
+	io.emit('LobbyChange', inLobby);
+        socket.broadcast.to(opponent).emit('gameStart');
     });
     
 });

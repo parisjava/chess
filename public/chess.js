@@ -73,7 +73,7 @@ var drop = function(source, target, piece, newPos, oldPos, orientation) {
 	to: target
     };
     if (game.move(move) !== null) {
-	console.log("Move is good\n");
+	move.opponent = match.opponentId;
 	socket.emit('move', JSON.stringify(move));
     }
     else {
