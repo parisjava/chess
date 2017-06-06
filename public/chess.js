@@ -10,7 +10,7 @@ var match = {
     opponentId : 0
 };
 var board;
-
+var turn;
 $("#lobby").hide();
 $("#chessgame").hide();
 
@@ -30,6 +30,7 @@ var game;
 socket.on('move', function(move) {
     game.move(move);
     board.position(game.fen(), false);
+    turn = (turn + 1) & 1;
 });
 
 function gameInit(color, opponentId) {
@@ -39,9 +40,11 @@ function gameInit(color, opponentId) {
     draggable: true,
     position: "start" ,
     sparePieces: true,
-    onDrop : drop
+	onDrop : drop,
+	onDragStart : dragStart
     });
     game = new Chess();
+    turn = 0;
 }
 
 socket.on('gameStart' , function(opponentId) {
@@ -69,7 +72,8 @@ socket.on('LobbyChange', function(inLobby) {
 var drop = function(source, target, piece, newPos, oldPos, orientation) {
     var move = {
 	from: source,
-	to: target
+	to: target,
+	promotion: 'q'
     };
     if (game.move(move) !== null) {
 	move.opponent = match.opponentId;
@@ -79,9 +83,17 @@ var drop = function(source, target, piece, newPos, oldPos, orientation) {
 	return 'snapback';
     }
     board.position(game.fen(), false);
-    
-    //console.log(source);
-}
+    turn = (turn + 1) & 1;
+    console.log(game.fen());
+};
+
+var dragStart = function(source, piece, pos, orientation) {
+    var value = 0;
+    if (piece.charAt(0) === 'b') {
+	value = 1;
+    }
+    return (turn === match.color &&  value === match.color);
+};
 
 
 console.log("Hello World");
