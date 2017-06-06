@@ -35,11 +35,16 @@ socket.on('move', function(move) {
 
 function gameInit(color, opponentId) {
     match.color = color;
+    orient = "black";
+    if (color === 0) {
+	orient = "white";
+    }
     match.opponentId = opponentId;
     board = ChessBoard("chessgame", {
-    draggable: true,
-    position: "start" ,
-    sparePieces: true,
+	draggable: true,
+	position: "start" ,
+	sparePieces: true,
+	orientation = orient,
 	onDrop : drop,
 	onDragStart : dragStart,
 	onSnapEnd : snapEnd
