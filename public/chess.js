@@ -4,8 +4,13 @@ var users = {};
 var user = {
     username: "",
     id: socket.id ,
-    opponentID: ""
 };
+
+var match = {
+    color : 0,
+    opponentId : 0
+};
+var board;
 
 $("#lobby").hide();
 $("#chessgame").hide();
@@ -20,7 +25,7 @@ var formHandler = function() {
 $("#submit").on('click', formHandler);
 
 
-var game = new Chess();
+var game;
 
 socket.on('move', function(move) {
     var move = JSON.parse(move);
@@ -28,13 +33,36 @@ socket.on('move', function(move) {
     board.position(game.fen(), false);
 });
 
+function gameInit(color, opponentId) {
+    match.color = color;
+    match.opponentId = opponentId;
+    board = ChessBoard("chessgame", {
+    draggable: true,
+    position: "start" ,
+    sparePieces: true,
+    onDrop : drop
+    });
+    game = new Chess();
+}
+
+socket.on('gameStart' , function(opponentId) {
+    gameInit(1, opponentId);
+    $("#lobby").hide();
+    $("#chessgame").show();
+});
+	  
 socket.on('LobbyChange', function(inLobby) {
     document.getElementById('lobby').innerHTML = "";
     $.each(inLobby, function(value, key) {
-	console.log(key.username);
+	if (user.username === key.username) {
+	    return true;
+	}
 	$("#lobby").append($('<button>').text(key.username)
 			   .on('click', function() {
-			       //socket.emit("createGame" , user.id);
+			       gameInit(0, key.id);
+			       $("#lobby").hide();
+			       $("#chessgame").show();
+			       socket.emit("invite" , key.id);
 			   }));
     });
 });
@@ -56,11 +84,5 @@ var drop = function(source, target, piece, newPos, oldPos, orientation) {
     //console.log(source);
 }
 
-var board = ChessBoard("chessgame", {
-    draggable: true,
-    position: "start" ,
-    sparePieces: true,
-    onDrop : drop
-});
 
 console.log("Hello World");
