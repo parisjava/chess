@@ -44,7 +44,7 @@ function gameInit(color, opponentId) {
 	draggable: true,
 	position: "start" ,
 	sparePieces: true,
-	orientation = orient,
+	orientation: orient,
 	onDrop : drop,
 	onDragStart : dragStart,
 	onSnapEnd : snapEnd
