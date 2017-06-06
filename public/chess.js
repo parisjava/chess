@@ -1,6 +1,6 @@
 
 var socket = io();
-var users = [];
+var users = {};
 var user = {
     username: "",
     id: socket.id ,
@@ -13,7 +13,7 @@ $("#chessgame").hide();
 var formHandler = function() {
     user.username = $("#name").val();
     $("#main").hide();
-    $("#chessgame").show();
+    $("#lobby").show();
     socket.emit('login', user);
 };
 
@@ -29,9 +29,14 @@ socket.on('move', function(move) {
 });
 
 socket.on('LobbyChange', function(inLobby) {
-    for (var x = 0; x<inLobby.length; x++) {
-	console.log(inLobby[x].username);
-    }
+    document.getElementById('lobby').innerHTML = "";
+    $.each(inLobby, function(value, key) {
+	console.log(key.username);
+	$("#lobby").append($('<button>').text(key.username)
+			   .on('click', function() {
+			       //socket.emit("createGame" , user.id);
+			   }));
+    });
 });
 
 var drop = function(source, target, piece, newPos, oldPos, orientation) {

@@ -2,7 +2,7 @@ var express = require('express')
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var inLobby = [];
+var inLobby = {};
 
 app.use(express.static('public'));
 app.get('/' , function(req, res) {
@@ -17,10 +17,12 @@ io.on('connection', function(socket) {
 	socket.broadcast.emit('move', move);
     });
 
+
     socket.on('login', function(user) {
-	inLobby.push(user);
+	inLobby[user.username] = user;
 	io.emit('LobbyChange', inLobby);
     });
+    
 });
 
 http.listen(3000, function() {
