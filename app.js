@@ -15,7 +15,7 @@ app.get('/' , function(req, res) {
 io.on('connection', function(socket) {
     console.log('a user connected');
     socket.on('move', function(move) {
-	socket.broadcast.to(move.opponent).emit('move', move);
+	io.emit('move', move);
     });
 
 
@@ -26,9 +26,8 @@ io.on('connection', function(socket) {
 
     socket.on('invite', function(opponent) {
 	delete inLobby[socket.id];
-	io.emit('LobbyChange', inLobby);
 	delete inLobby[opponent];
-        socket.broadcast.to(opponent).emit('gameStart', socket.id);
+        io.emit('gameStart', socket.id);
 	io.emit('LobbyChange', inLobby);
     });
     
