@@ -29,6 +29,7 @@ io.on('connection', function(socket) {
 	io.emit('LobbyChange', inLobby);
 	delete inLobby[opponent];
         socket.broadcast.to(opponent).emit('gameStart');
+	io.emit('LobbyChange', inLobby);
     });
     
 });
