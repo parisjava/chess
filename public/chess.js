@@ -41,7 +41,8 @@ function gameInit(color, opponentId) {
     position: "start" ,
     sparePieces: true,
 	onDrop : drop,
-	onDragStart : dragStart
+	onDragStart : dragStart,
+	onSnapEnd : snapEnd
     });
     game = new Chess();
     turn = 0;
@@ -84,7 +85,6 @@ var drop = function(source, target, piece, newPos, oldPos, orientation) {
     }
     board.position(game.fen(), false);
     turn = (turn + 1) & 1;
-    console.log(game.fen());
 };
 
 var dragStart = function(source, piece, pos, orientation) {
@@ -93,6 +93,10 @@ var dragStart = function(source, piece, pos, orientation) {
 	value = 1;
     }
     return (turn === match.color &&  value === match.color);
+};
+
+var snapEnd = function(source, target, piece) {
+    board.position(game.fen(), false);
 };
 
 
