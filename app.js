@@ -31,7 +31,7 @@ io.on('connection', function(socket) {
     });
     
 });
-
+console.log(port);
 http.listen(port, function() {
     console.log('listening on *:' + port);
 });
