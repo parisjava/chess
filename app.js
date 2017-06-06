@@ -17,6 +17,7 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function() {
 	delete inLobby[socket.id];
 	io.emit('LobbyChange', inLobby);
+	io.emit('leftMatch' , socket.id);
     });
     socket.on('move', function(move) {
 	io.to(move.opponent).emit('move', move);

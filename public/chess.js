@@ -53,6 +53,12 @@ function gameInit(color, opponentId) {
     turn = 0;
 }
 
+socket.on('leftMatch', function(id) {
+    if (id === match.opponentId) {
+	alert("Opponent Left the Match");
+    }
+});
+
 socket.on('gameStart' , function(opponentId) {
     gameInit(1, opponentId);
     $("#lobby").hide();
