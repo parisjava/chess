@@ -14,6 +14,10 @@ app.get('/' , function(req, res) {
 
 io.on('connection', function(socket) {
     console.log('a user connected');
+    socket.on('disconnect', function() {
+	delete inLobby[socket.id];
+	io.emit('LobbyChange', inLobby);
+    });
     socket.on('move', function(move) {
 	io.to(move.opponent).emit('move', move);
     });
