@@ -3,6 +3,7 @@
   <head>
     <title>Chess Game</title>
     <link rel="stylesheet" href = "css/chessboard-0.3.0.min.css"></link>
+    <link rel="stylesheet" href = "game.css"></link>
     <script type ="text/javascript" src=
 	  "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     </script>
@@ -14,9 +15,13 @@
     </head>
   <body>
     <div id="main">
-      username:
-      <input id="name" type="text"> </input>
-      <button id= "submit">Submit</input>
+      <h1 id="gameTitle">Fast Chess</h1>
+      <img id="chessImage" src="img/keyIntro.jpg" alt="chess image"> <br>
+      <div>
+	<label for="name">username:</label>
+	<input id="name" type="text"></input>
+	<button id= "submit">Submit</input>
+      </div>
     </div>
 
     <div id="lobby">

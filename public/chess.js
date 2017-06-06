@@ -100,4 +100,3 @@ var snapEnd = function(source, target, piece) {
 };
 
 
-console.log("Hello World");
