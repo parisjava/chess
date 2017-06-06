@@ -55,12 +55,12 @@ socket.on('gameStart' , function(opponentId) {
 });
 	  
 socket.on('LobbyChange', function(inLobby) {
-    document.getElementById('lobby').innerHTML = "";
+    document.getElementById('buttons').innerHTML = "";
     $.each(inLobby, function(key, value) {
 	if (user.id === key) {
 	    return true;
 	}
-	$("#lobby").append($('<button>').text(value.username)
+	$("#buttons").append($('<button>').text(value.username)
 			   .on('click', function() {
 			   gameInit(0, key);
 			   $("#lobby").hide();
