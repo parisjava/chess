@@ -15,19 +15,19 @@ app.get('/' , function(req, res) {
 io.on('connection', function(socket) {
     console.log('a user connected');
     socket.on('move', function(move) {
-	io.emit('move', move);
+	io.to(move.opponent).emit('move', move);
     });
 
 
     socket.on('login', function(user) {
-	inLobby[user.username] = user;
+	inLobby[user.id] = user;
 	io.emit('LobbyChange', inLobby);
     });
 
     socket.on('invite', function(opponent) {
 	delete inLobby[socket.id];
 	delete inLobby[opponent];
-        io.emit('gameStart', socket.id);
+        io.to(opponent).emit('gameStart', socket.id);
 	io.emit('LobbyChange', inLobby);
     });
     
