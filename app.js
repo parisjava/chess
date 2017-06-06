@@ -25,11 +25,10 @@ io.on('connection', function(socket) {
     });
 
     socket.on('invite', function(opponent) {
-	console.log("Invite event triggered");
 	delete inLobby[socket.id];
 	io.emit('LobbyChange', inLobby);
 	delete inLobby[opponent];
-        socket.broadcast.to(opponent).emit('gameStart');
+        socket.broadcast.to(opponent).emit('gameStart', socket.id);
 	io.emit('LobbyChange', inLobby);
     });
     
