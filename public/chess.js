@@ -14,6 +14,7 @@ var formHandler = function() {
     user.username = $("#name").val();
     $("#main").hide();
     $("#chessgame").show();
+    socket.emit('login', user);
 };
 
 $("#submit").on('click', formHandler);
@@ -25,10 +26,12 @@ socket.on('move', function(move) {
     var move = JSON.parse(move);
     game.move(move);
     board.position(game.fen(), false);
-    console.log('hello world');
 });
 
-socket.on('login', function(user) {
+socket.on('LobbyChange', function(inLobby) {
+    for (var x = 0; x<inLobby.length; x++) {
+	console.log(inLobby[x].username);
+    }
 });
 
 var drop = function(source, target, piece, newPos, oldPos, orientation) {
