@@ -12,7 +12,7 @@ var match = {
 var board;
 var turn;
 $("#lobby").hide();
-$("#chessgame").hide();
+$("#game").hide();
 
 var formHandler = function() {
     user.username = $("#name").val();
@@ -24,7 +24,18 @@ var formHandler = function() {
 
 $("#submit").on('click', formHandler);
 
-
+$("#message").on('keydown' , function(e) {
+    if (e.keyCode === 13) {
+	var message = {
+	    m : $("#message").val(),
+	    sender : user.username,
+	    dest : match.opponentId
+	};
+	messageUpdate(message, 'user');
+	socket.emit('message' , message);
+	$("#message").val('');
+    }
+});
 var game;
 
 socket.on('move', function(move) {
@@ -43,7 +54,6 @@ function gameInit(color, opponentId) {
     board = ChessBoard("chessgame", {
 	draggable: true,
 	position: "start" ,
-	sparePieces: true,
 	orientation: orient,
 	onDrop : drop,
 	onDragStart : dragStart,
@@ -62,7 +72,7 @@ socket.on('leftMatch', function(id) {
 socket.on('gameStart' , function(opponentId) {
     gameInit(1, opponentId);
     $("#lobby").hide();
-    $("#chessgame").show();
+    $("#game").show();
 });
 	  
 socket.on('LobbyChange', function(inLobby) {
@@ -75,10 +85,18 @@ socket.on('LobbyChange', function(inLobby) {
 			   .on('click', function() {
 			   gameInit(0, key);
 			   $("#lobby").hide();
-			   $("#chessgame").show();
+			   $("#game").show();
 			   socket.emit("invite" , key);
 			  }));
     });
+});
+
+function messageUpdate(message, id) {
+    var string = message.sender + ": " + message.m;
+    $("#chatbox").append($('<p>').text(string).addClass(id));
+};
+socket.on('message' , function(message) {
+    messageUpdate(message, "op");
 });
 
 var drop = function(source, target, piece, newPos, oldPos, orientation) {

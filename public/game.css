@@ -24,3 +24,40 @@
     font-size: 18px;
     border: none;
 }
+#game {
+    width: 1000px;
+    margin: 0 auto;
+}
+#game #chessgame {
+    float:left;
+}
+
+#game #chat {
+    width: 400px;
+    height: 400px;
+    background-color: grey;
+    float: right;
+}
+
+#game #chat #chatbox {
+    width: 400px;
+    height: 370px;
+    max-width: 400px;
+    max-heigth: 370px;
+    background-color: grey;
+    overflow: auto;
+    overflow-y: scroll;
+    vertical-align:top;
+}
+
+#game #chat #textInput {
+    height: 30px;
+    width: 100%;
+    vertical-align:bottom;
+    background-color: black;
+}
+
+#game #chat #textInput #message {
+    height : 100%;
+    width : 100%;
+}

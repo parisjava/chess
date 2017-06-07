@@ -35,6 +35,10 @@ io.on('connection', function(socket) {
         io.to(opponent).emit('gameStart', socket.id);
 	io.emit('LobbyChange', inLobby);
     });
+
+    socket.on('message', function(message) {
+	io.to(message.dest).emit('message', message);
+    });
     
 });
 console.log(port);
